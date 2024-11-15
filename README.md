@@ -1,17 +1,17 @@
-# Python scripts
-
-## `citations.py`
+# `citations.py`
 
 Given an author identified by his/her BAI, this simple Python3 script counts the number of citations and the number of citations excluding self cites in the [Inspirehep](http://inspirehep.net/) database for each paper in a given collection.
 
 **Usage:**
 
-`citations.py [-b|--BAI=<BAI>] [-y|--year=<YEAR>] [-c|--collection=<COLLECTION>] [-r|--reversed] [-h|--help]`
+`citations.py [-b BAI] [-y Y] [-l LATESTYEARS] [-c COLLECTION] [--lessauthors] [-r]`
 
 **Options:**
-* `-b <BAI>, --BAI=<BAI>`, specifies the author's BAI identifier
-* `-y <YEAR>, --year=<YEAR>`, specifies the year
-* `-c <COLLECTION>, --collection=<COLLECTION>`, specifies the collection: all, book, bookchapter, conferencepaper, introductory, lectures, proceedings, published, review, thesis
+* `-b <BAI>, --BAI <BAI>`, specifies the author's BAI identifier
+* `-y <Y>, --year <Y>`, results for a given year
+* `-l LATESTYEARS, --latestyears LATESTYEARS`, results for the latest given years
+* `-c COLLECTION, --collection COLLECTION`, collections: all, article, book, bookchapter, conferencepaper, introductory, lectures, note, proceedings, published, report, review, thesis
+* `--lessauthors`, limit the results to publications with 10 authors or less
 * `-r, --reversed`, sorts the items in chronological order
 
-Default values are `E.Franzin.1` for the BAI, `published` for the collection and all the corresponding items in the Inspirehep database are sorted from the most recent.
+Default values are `E.Franzin.1` for the BAI, `article` for the collection and all the corresponding items in the Inspirehep database are sorted from the most recent.
