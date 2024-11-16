@@ -1,7 +1,5 @@
 # `citations.py`
 
-Given an author identified by his/her BAI, this simple Python3 script counts the number of citations and the number of citations excluding self cites in the [Inspirehep](http://inspirehep.net/) database for each paper in a given collection.
-
 **Usage:**
 
 `citations.py [-b BAI] [-y Y] [-l LATESTYEARS] [-c COLLECTION] [--lessauthors] [-r]`
