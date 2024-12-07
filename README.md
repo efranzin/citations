@@ -1,5 +1,8 @@
 # `citations.py`
 
+The first time you run the script it downloads the whole profile in a local .json file, it can take some minutes for very large bibliographies. If the local database is at least one day old, it asks for updates. Otherwise you can run the script with the local data and it should be very fast.
+
+
 ## Usage
 
 `citations.py [-b BAI] [-y GIVEN_YEAR | -l LATEST_YEARS] [-c COLLECTION] [-a NUMBER_OF_AUTHORS] [-r]`
@@ -15,5 +18,7 @@
 
 Default values are `E.Franzin.1` for the BAI, `article` for the collection and all the corresponding items in the Inspirehep database are sorted from the most recent.
 
+
 ## About the hit date
-The function `get_hit_date(hit)` defined in [`profile.py`](profile.py#L8) for _published_ hits returns the maximum between the earliest date the hit appeared and the publication date; this is not the default behaviour of [INSPIRE](https://inspirehep.net/) which always uses the earliest date.
+
+The function `get_hit_date(hit)` defined in [`profile.py`](profile.py#L8) for _published_ hits returns the maximum between the earliest date the hit appeared and the publication date; this is not the default behaviour of INSPIRE which always uses the earliest date.
