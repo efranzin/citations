@@ -7,7 +7,7 @@ Inspirehep database (https://inspirehep.net/) for each paper in a given collecti
 """
 
 __author__ = 'Edgardo Franzin'
-__version__ = '3.0'
+__version__ = '3.0.1'
 __license__ = 'GPL'
 __email__ = 'edgardo<dot>franzin<at>gmail<dot>com'
 
@@ -50,7 +50,7 @@ first_year, last_year, years_range = get_years_range(data)
 
 # Sorting: default is from most recent
 if order == True:
-    data = reversed(data)
+    data = list(reversed(data))
 
 # Lists to compute the citation metrics for published papers
 cits_total = [hit['metadata']['citation_count'] for hit in data]
