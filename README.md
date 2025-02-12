@@ -1,6 +1,8 @@
 # `citations.py`
 
-The first time you run the script it downloads the whole profile in a local .json file, it can take some minutes for very large bibliographies. If the local database is at least one day old, it asks for updates. Otherwise you can run the script with the local data and it should be very fast.
+Before running the script you need to edit `config.ini` with your own BAI identifier, or specify it using `-b BAI`.
+The first time you run the script it downloads the whole profile in a local .json file, it can take some minutes for very large bibliographies.
+If the local database is at least one day old, it asks for updates. Otherwise you can run the script with the local data and it should be very fast.
 
 
 ## Usage
@@ -16,7 +18,7 @@ The first time you run the script it downloads the whole profile in a local .jso
 * `-a/--authors NUMBER_OF_AUTHORS`, results with a given number of authors or less, e.g. 10
 * `-r/--reversed`, sorts the items in chronological order
 
-Default values are `E.Franzin.1` for the BAI, `article` for the collection and all the corresponding items in the Inspirehep database are sorted from the most recent.
+The default value for collection is `article`, and the items are sorted from the most recent.
 
 
 ## About the hit date

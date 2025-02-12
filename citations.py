@@ -7,7 +7,7 @@ Inspirehep database (https://inspirehep.net/) for each paper in a given collecti
 """
 
 __author__ = 'Edgardo Franzin'
-__version__ = '3.0.1'
+__version__ = '3.1.0'
 __license__ = 'GPL'
 __email__ = 'edgardo<dot>franzin<at>gmail<dot>com'
 
