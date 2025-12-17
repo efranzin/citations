@@ -37,10 +37,10 @@ def warnings(data, number_of_authors, latest_years, given_year, collection):
     warning_parts = []
     total_hits = len(data)
     sa_string = 'single-author ' if number_of_authors == 1 else ''
-    if total_hits == 0:
+    if total_hits == 0:        
         if latest_years or given_year:
             warning_parts.append('in the selected period')
-        if number_of_authors > 1:
+        if number_of_authors is not None and number_of_authors > 1:
             warning_parts.append(f'with less than {number_of_authors} authors')
         if collection != 'all':
             warning_parts.append(f'in the \033[3m{collection}\033[0m collection')

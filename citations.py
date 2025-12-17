@@ -7,7 +7,7 @@ Inspirehep database (https://inspirehep.net/) for each paper in a given collecti
 """
 
 __author__ = 'Edgardo Franzin'
-__version__ = '3.1.0'
+__version__ = '3.2'
 __license__ = 'GPL'
 __email__ = 'edgardo<dot>franzin<at>gmail<dot>com'
 
@@ -53,21 +53,42 @@ if order == True:
     data = list(reversed(data))
 
 # Lists to compute the citation metrics for published papers
-cits_total = [hit['metadata']['citation_count'] for hit in data]
-cits_noself_total = [hit['metadata']['citation_count_without_self_citations'] for hit in data]
-cits_citeable = [hit['metadata']['citation_count'] for hit in data if 'citeable' in hit['metadata']]
-cits_noself_citeable = [hit['metadata']['citation_count_without_self_citations'] for hit in data if 'citeable' in hit['metadata']]
-cits_published = [hit['metadata']['citation_count'] for hit in data if 'refereed' in hit['metadata']]
-cits_noself_published = [hit['metadata']['citation_count_without_self_citations'] for hit in data if 'refereed' in hit['metadata']]
+cits_total = {'cits': [], 'cits_noself': [], 'authors': [], 'age': []}
+cits_citeable = {'cits': [], 'cits_noself': [], 'authors': [], 'age': []}
+cits_published = {'cits': [], 'cits_noself': [], 'authors': [], 'age': []}
 
-total_hits = len(cits_total)
-total_hits_citeable = len(cits_citeable)
-total_hits_published = len(cits_published)
+for hit in data:
+    metadata = hit['metadata']
+    cits_count = metadata['citation_count']
+    cits_noself_count = metadata['citation_count_without_self_citations']
+    author_count = metadata['author_count']
+    age_of_publication = metadata['age_of_publication']
+
+    cits_total['cits'].append(cits_count)
+    cits_total['cits_noself'].append(cits_noself_count)
+    cits_total['authors'].append(author_count)
+    cits_total['age'].append(age_of_publication)
+
+    if 'citeable' in metadata:
+        cits_citeable['cits'].append(cits_count)
+        cits_citeable['cits_noself'].append(cits_noself_count)
+        cits_citeable['authors'].append(author_count)
+        cits_citeable['age'].append(age_of_publication)
+
+    if 'refereed' in metadata:
+        cits_published['cits'].append(cits_count)
+        cits_published['cits_noself'].append(cits_noself_count)
+        cits_published['authors'].append(author_count)
+        cits_published['age'].append(age_of_publication)
+
+total_hits = len(cits_total['cits'])
+total_hits_citeable = len(cits_citeable['cits'])
+total_hits_published = len(cits_published['cits'])
 
 # Count the number of citations and citations excluding self cites
-citations = {'total': {'total': sum(cits_total), 'noself': sum(cits_noself_total)},
-    'published': {'total': sum(cits_published), 'noself': sum(cits_noself_published)},
-    'citeable': {'total': sum(cits_citeable), 'noself': sum(cits_noself_citeable)}}
+citations = {'total': {'total': sum(cits_total['cits']), 'noself': sum(cits_total['cits_noself'])},
+    'published': {'total': sum(cits_published['cits']), 'noself': sum(cits_published['cits_noself'])},
+    'citeable': {'total': sum(cits_citeable['cits']), 'noself': sum(cits_citeable['cits_noself'])}}
 
 # For each record print the title, the number of citations and the number of citations excluding self cites
 for i, hit in enumerate(data):
@@ -75,7 +96,7 @@ for i, hit in enumerate(data):
     if 'refereed' in hit['metadata']:
         title += '*'
     print(f'\033[1m{title}\033[0m\
-        \nNumber of citations: {cits_total[i]}; Excluding self cites: {cits_noself_total[i]}')
+        \nNumber of citations: {cits_total['cits'][i]}; Excluding self cites: {cits_total['cits_noself'][i]}')
 
 from summary import *
 
@@ -101,20 +122,19 @@ if total_hits_published > 1:
 # Compute some citation metrics https://en.wikipedia.org/wiki/Author-level_metrics
 # In this case they are computed for the published data
 from metrics import *
-indices = compute_metrics(cits_published, cits_noself_published, years_range)
+indices = compute_metrics(cits_published, years_range)
+format_index = lambda idx: f'{idx:g}' if idx.is_integer() else f'{idx:.2f}'
 
-if total_hits_published > 1:
+if total_hits_published > 0:
     bibliometrics_last_years = f' (last {latest_years} years)' if latest_years else ''
     if given_year:
         print(f'\n--Bibliometrics{bibliometrics_last_years}--\nNumber of publications: {total_hits_published}, citeable: {total_hits_citeable}, year: {given_year}')
     else:
         print(f'\n--Bibliometrics{bibliometrics_last_years}--\nNumber of publications: {total_hits_published}, citeable: {total_hits_citeable}, active years: {years_range} ({first_year}–{last_year})')
-    for index in ['h-index', 'i10-index', 'g-index', 'm-index']:
-        if index == 'm-index':
-            print(f"{index}: {indices[index]:0.2f}; Excluding self cites: {indices[f'{index}_noself']:0.2f}")
-        else:
-            print(f"{index}: {indices[index]}; Excluding self cites: {indices[f'{index}_noself']}")
+    print(f'Mean number of citations per paper: {np.mean(cits_published['cits']):0.1f}; Excluding self cites: {np.mean(cits_published['cits_noself']):0.1f}')
+    for index in indices:
+        print(f'{index}: {format_index(indices[index][0])}; Excluding self cites: {format_index(indices[index][1])}')
 
 # Breakdown of papers by citations
-breakdown = breakdown_citations(cits_citeable, cits_noself_citeable, cits_published, cits_noself_published)
+breakdown = breakdown_citations(cits_citeable['cits'], cits_citeable['cits_noself'], cits_published['cits'], cits_published['cits_noself'])
 print(breakdown) if breakdown else None
