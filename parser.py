@@ -40,11 +40,3 @@ if default_BAI == 'default' and args.BAI != 'default':
     with open('config.ini', 'w') as configfile:
         config.write(configfile)
     print(f"{args.BAI} saved as default BAI in config.ini.")
-
-# Save the arguments into variables
-BAI = args.BAI
-given_year = args.given_year
-latest_years = args.latest_years
-collection = args.collection
-order = args.order
-number_of_authors = args.number_of_authors

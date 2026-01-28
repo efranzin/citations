@@ -47,13 +47,13 @@ categories = ['unknown (0)',
 # Function to get histogram data
 def get_histogram(citations):
     bin_indices = np.digitize(citations, bin_edges)
-    return list(np.bincount(bin_indices, minlength=7))
+    return np.bincount(bin_indices, minlength=7)
 
 
 # Compute and print the breakdown of papers
 def breakdown_citations(cits_citeable, cits_noself_citeable, cits_published, cits_noself_published):
-    total_hits_citeable = len(cits_citeable)
-    total_hits_published = len(cits_published)
+    total_hits_citeable = cits_citeable.size
+    total_hits_published = cits_published.size
 
     if total_hits_citeable <= 1:
         return None
